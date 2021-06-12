@@ -1,5 +1,6 @@
-# Chat Application
-This project is a front-end part of my thesis. Back-end is located in ... repository.
+# Emotion Chat Application (Client)
+This project is a front-end part of my thesis "Design and implementation of an instant messenger with detecting emotions in text messages feature". Back-end is located here: https://github.com/andriy200017/emotion-chat.
+
 To start the local sever at http://localhost:3000, run this commands:
 
 1. npm install - install dependencies
