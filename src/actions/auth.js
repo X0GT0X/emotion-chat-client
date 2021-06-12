@@ -1,6 +1,6 @@
-import history from '../history';
-import {parseJSON} from '../utils/misc';
-import {get_token, create_user} from '../utils/http_functions';
+import history from '../utils/history';
+import { parseJSON } from '../utils/misc';
+import { getToken, createUser } from '../utils/http_functions';
 import {
   LOGIN_USER_REQUEST,
   LOGIN_USER_SUCCESS,
@@ -11,8 +11,7 @@ import {
   LOGOUT_USER
 } from '../utils/constants';
 
-
-export function loginUserSuccess(token, login) {
+export function loginUserSuccess (token, login) {
   localStorage.setItem('token', token);
   localStorage.setItem('userLogin', login);
   return {
@@ -20,54 +19,53 @@ export function loginUserSuccess(token, login) {
     payload: {
       token,
       login
-    },
+    }
   };
 }
 
-
-export function loginUserFailure(error) {
+export function loginUserFailure (error) {
   localStorage.removeItem('token');
   localStorage.removeItem('userLogin');
   return {
     type: LOGIN_USER_FAILURE,
     payload: {
       status: error.response.status,
-      statusText: error.response.statusText,
-    },
+      statusText: error.response.statusText
+    }
   };
 }
 
-export function loginUserRequest() {
+export function loginUserRequest () {
   return {
-    type: LOGIN_USER_REQUEST,
+    type: LOGIN_USER_REQUEST
   };
 }
 
-export function logout() {
+export function logout () {
   localStorage.removeItem('token');
   localStorage.removeItem('userLogin');
   return {
-    type: LOGOUT_USER,
+    type: LOGOUT_USER
   };
 }
 
-export function logoutAndRedirect() {
+export function logoutAndRedirect () {
   return (dispatch) => {
     dispatch(logout());
     history.push('/login');
   };
 }
 
-export function redirectToRoute(route) {
+export function redirectToRoute (route) {
   return () => {
     history.push(route);
   };
 }
 
-export function loginUser(login, password) {
+export function loginUser (login, password) {
   return function (dispatch) {
     dispatch(loginUserRequest());
-    return get_token(login, password)
+    return getToken(login, password)
       .then(parseJSON)
       .then(response => {
         try {
@@ -78,30 +76,30 @@ export function loginUser(login, password) {
           dispatch(loginUserFailure({
             response: {
               status: 403,
-              statusText: 'Invalid token',
-            },
+              statusText: 'Invalid token'
+            }
           }));
         }
       })
+      // eslint-disable-next-line node/handle-callback-err
       .catch(error => {
         dispatch(loginUserFailure({
           response: {
             status: 403,
-            statusText: 'Invalid login or password',
-          },
+            statusText: 'Invalid login or password'
+          }
         }));
       });
   };
 }
 
-
-export function registerUserRequest() {
+export function registerUserRequest () {
   return {
-    type: REGISTER_USER_REQUEST,
+    type: REGISTER_USER_REQUEST
   };
 }
 
-export function registerUserSuccess(token, login) {
+export function registerUserSuccess (token, login) {
   localStorage.setItem('token', token);
   localStorage.setItem('userLogin', login);
   return {
@@ -109,25 +107,25 @@ export function registerUserSuccess(token, login) {
     payload: {
       token,
       login
-    },
+    }
   };
 }
 
-export function registerUserFailure(error) {
+export function registerUserFailure (error) {
   localStorage.removeItem('token');
   return {
     type: REGISTER_USER_FAILURE,
     payload: {
       status: error.response.status,
-      statusText: error.response.statusText,
-    },
+      statusText: error.response.statusText
+    }
   };
 }
 
-export function registerUser(name, surname, login, password) {
+export function registerUser (name, surname, login, password) {
   return function (dispatch) {
     dispatch(registerUserRequest());
-    return create_user(name, surname, login, password)
+    return createUser(name, surname, login, password)
       .then(parseJSON)
       .then(response => {
         try {
@@ -137,18 +135,19 @@ export function registerUser(name, surname, login, password) {
           dispatch(registerUserFailure({
             response: {
               status: 403,
-              statusText: 'Invalid token',
-            },
+              statusText: 'Invalid token'
+            }
           }));
         }
       })
+      // eslint-disable-next-line node/handle-callback-err
       .catch(error => {
         dispatch(registerUserFailure({
-            response: {
-              status: 403,
-              statusText: 'User with that login already exists',
-            },
+          response: {
+            status: 403,
+            statusText: 'User with that login already exists'
           }
+        }
         ));
       });
   };

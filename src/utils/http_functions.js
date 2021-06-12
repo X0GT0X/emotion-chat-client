@@ -1,19 +1,19 @@
 import axios from 'axios';
-import {API_PATH} from './constants';
+import { API_PATH } from './constants';
 
 const api_host = `${API_PATH}/api`;
 
 const tokenConfig = (token) => ({
   headers: {
-    'Accept': 'application/json',
+    Accept: 'application/json',
     'Content-Type': 'application/json',
-    'Authorization': `Bearer ${token}`,
-  },
+    Authorization: `Bearer ${token}`
+  }
 });
 
-export const validate_token = (token) =>
+export const validateToken = (token) =>
   axios.post(`${api_host}/auth/is_token_valid`, {
-    token,
+    token
   }, tokenConfig(token));
 
 export const create_user = (name, surname, login, password) =>
@@ -21,13 +21,13 @@ export const create_user = (name, surname, login, password) =>
     name,
     surname,
     login,
-    password,
+    password
   });
 
 export const get_token = (login, password) =>
   axios.post(`${api_host}/auth/signin`, {
     login,
-    password,
+    password
   });
 
 export const data_about_user = (token) =>
@@ -40,7 +40,7 @@ export const update_user_photo = (token, data) =>
   axios.put(`${api_host}/user/image`, data, {
     headers: {
       'Content-Type': 'multipart/form-data',
-      'Authorization': `Bearer ${token}`,
+      Authorization: `Bearer ${token}`
     }
   });
 
@@ -61,10 +61,10 @@ export const get_chats = (token) =>
   axios.get(`${api_host}/chats`, tokenConfig(token));
 
 export const add_chat = (token, login) =>
-  axios.post(`${api_host}/chats`, {user: login}, tokenConfig(token));
+  axios.post(`${api_host}/chats`, { user: login }, tokenConfig(token));
 
 export const read_chat = (token, chat, type) =>
-  axios.put(`${api_host}/chat/${chat}`, {type}, tokenConfig(token));
+  axios.put(`${api_host}/chat/${chat}`, { type }, tokenConfig(token));
 
 export const delete_chat = (token, id) =>
   axios.delete(`${api_host}/chat/${id}`, tokenConfig(token));
@@ -84,7 +84,7 @@ export const update_group_photo = (token, data, chat) =>
   axios.put(`${api_host}/group/image/${chat}`, data, {
     headers: {
       'Content-Type': 'multipart/form-data',
-      'Authorization': `Bearer ${token}`,
+      Authorization: `Bearer ${token}`
     }
   });
 

@@ -1,44 +1,64 @@
 import React from 'react';
-import {makeStyles} from '@material-ui/core/styles';
-import TopBar from './components/TopBar';
-import {Router, Route, Switch} from 'react-router-dom';
-import Dashboard from "./pages/dashboard/Dashboard";
-import Login from "./pages/login/Login";
-import Register from "./pages/register/Register";
-import Theme from "./Theme";
-import browserHistory from './history';
-import {Provider} from 'react-redux';
-import {requireNoAuthentication} from './components/notAuthenticatedComponent';
-import {requireAuthentication} from './components/AuthenticatedComponent';
+import { PropTypes } from 'prop-types';
+import { Router, Route, Switch } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { syncHistoryWithStore } from 'react-router-redux';
+import withStyles from '@material-ui/core/styles/withStyles';
+import TopBar from './components/TopBar/TopBar';
+import Dashboard from './pages/Dashboard/Dashboard';
+import Login from './pages/Login/Login';
+import Register from './pages/Register/Register';
+import Theme from './utils/Theme';
+import { requireNoAuthentication } from './components/Authentication/notAuthenticatedComponent';
+import { requireAuthentication } from './components/Authentication/AuthenticatedComponent';
 import configureStore from './store/configureStore';
-import {syncHistoryWithStore} from 'react-router-redux';
+import browserHistory from './utils/history';
 
-const useStyles = makeStyles(() => ({
+/**
+ * Provides styles object for App component.
+ *
+ * @return {object} Component styles.
+ */
+const styles = () => ({
   app: {
-    height: '100%',
-  },
-}));
+    height: '100%'
+  }
+});
 
-function App() {
-
-  const classes = useStyles();
+/**
+ * Represents an App component.
+ *
+ * @param props Component properties.
+ * @return {JSX.Element}
+ * @constructor
+ */
+const App = (props) => {
+  const { classes } = props;
   const store = configureStore();
   const history = syncHistoryWithStore(browserHistory, store);
 
-  return <div className={'app ' + classes.app}>
+  return <div className={classes.app}>
     <Provider store={store}>
       <Theme>
         <TopBar/>
         <Router history={history}>
           <Switch>
-            <Route exact path='/' component={requireAuthentication(Dashboard)}/>
+            <Route
+              exact path='/'
+              component={requireAuthentication(Dashboard)}
+            />
             <Route path='/login' component={requireNoAuthentication(Login)}/>
-            <Route path='/register' component={requireNoAuthentication(Register)}/>
+            <Route path='/register'
+                   component={requireNoAuthentication(Register)}/>
           </Switch>
         </Router>
       </Theme>
     </Provider>
-  </div>
-}
+  </div>;
+};
 
-export default App;
+App.propTypes = {
+  classes: PropTypes.object
+};
+
+export default withStyles(styles)(App);

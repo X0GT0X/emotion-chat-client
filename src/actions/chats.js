@@ -40,7 +40,7 @@ import {
   UPDATE_GROUP_MEMBERS_SUCCESS,
   TOGGLE_SIDEBAR,
 } from '../utils/constants';
-import {socket} from "../pages/dashboard/Dashboard";
+import {socket} from "../pages/Dashboard/Dashboard";
 
 export function receiveUserChats(data, selectChat) {
   socket.emit('chats_loading');
