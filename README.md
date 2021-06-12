@@ -1,3 +1,10 @@
+# Chat Application
+This project is a front-end part of my thesis. Back-end is located in ... repository.
+To start the local sever at http://localhost:3000, run this commands:
+
+1. npm install - install dependencies
+2. npm start - start local sever 
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
